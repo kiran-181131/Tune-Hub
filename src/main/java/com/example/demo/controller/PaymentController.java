@@ -55,5 +55,23 @@ public class PaymentController {
 		finally {
 			return order.toString();
 		}
-	}	
+	}
+	@PostMapping("/verify")
+	@ResponseBody
+	public boolean verifyPayment(@RequestParam  String orderId, @RequestParam String paymentId, @RequestParam String signature) {
+	    try {
+	        // Initialize Razorpay client with your API key and secret
+	        RazorpayClient razorpayClient = new RazorpayClient("rzp_test_5vfYnNDg2lyCAi", "rw6W3at2ioY7PsClGRIz3nCL");
+	        // Create a signature verification data string
+	        String verificationData = orderId + "|" + paymentId;
+
+	        // Use Razorpay's utility function to verify the signature
+	        boolean isValidSignature = Utils.verifySignature(verificationData, signature, "rw6W3at2ioY7PsClGRIz3nCL");
+
+	        return isValidSignature;
+	    } catch (RazorpayException e) {
+	        e.printStackTrace();
+	        return false;
+	    }
+	}
 }
