@@ -43,26 +43,21 @@ public class UsersController {
 
 			if (role.equals("admin")) {
 				return "adminHome";
-			} else {
+			} 
+			else {
+				Users user=service.getUser(email);
+				boolean userStatus=user.isPremium();
+				List<Song> songsList = songService.fetchAllSongs();
+				model.addAttribute("songs", songsList);
+				
+				model.addAttribute("isPremium",userStatus);
 				return "customerHome";
 			}
-		} else {
+		} 
+		else {
 			return "login";
 		}
 	}
-
-	/*@GetMapping("/pay")
-	public String pay(@RequestParam String email) {
-		boolean paymentStatus = false;// payment api
-
-		if (paymentStatus == true) {
-			Users user = service.getUser(email);
-			user.setPremium(true);
-			service.updateUser(user);
-		}
-		return "login";
-	}*/
-	
 	@GetMapping("/logout")
 	public String logout(HttpSession session) {
 		session.invalidate();
