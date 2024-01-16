@@ -5,21 +5,46 @@
 <title>Customer Page</title>
 <link rel="stylesheet" th:href="@{/css/customerHome.css}">
 </head>
+
 <body>
-<div class="customer">
-<h1>Customer Home page</h1>
-</div>
+	<div class="customer">
+		<h1>Customer Home page</h1>
+	</div>
 
-<div class="subscribe">
-<a href="pay">Get Premium</a>
 
-<br>
-</div>
+	<div  th:unless="${isPremium}"     class="non-premium">
+		<a href="pay">Get Premium</a> 
+		<br> 
+		<a href="logout">LOGOUT</a> 
+		<br/>
+	</div>
+	
+	
+	<div  th:if="${isPremium}"   class="premium">
+	<table border>
+		<thead>
+			<tr>
+				<th>Name</th>
+				<th>Artist</th>
+				<th>Genre</th>
+				<th>play</th>
+			</tr>
+		</thead>
 
-<div class="logout">
-<a href="logout">LOGOUT</a>
-
-<br/>
-</div>
+		<tbody>
+			<tr th:each="song:${songs}">
+				<td th:text="${song.name}"></td>
+				<td th:text="${song.artist}"></td>
+				<td th:text="${song.genre}"></td>
+				<td>
+				    <audio controls>
+						<source th:src="${song.link}" type="audio/mp3">
+					</audio>
+				</td>
+			</tr>
+		</tbody>
+	
+	</table>
+	</div>
 </body>
 </html>
